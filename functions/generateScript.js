@@ -291,13 +291,15 @@ exports.handler = async function(event, context) {
                 }
             });
         });
-        
-return {
-    statusCode: 200,
-    body: JSON.stringify({ 
-        code: scriptCode 
-    })
-};
+
+        scriptCode += `return\n`;
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ 
+                scriptCode: scriptCode 
+            })
+        };
 
 } catch (error) {
     console.error('Erro no processamento:', error);
