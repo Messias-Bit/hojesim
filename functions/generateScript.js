@@ -222,41 +222,47 @@ exports.handler = async function(event, context) {
         scriptCode += `return\n\n`;
 
         const lines = inputText.split(/\n|\\n/);
-        let processedLines = [];
+let processedLines = [];
 
-        lines.forEach(line => {
-            const trimmedLine = line.trim();
-            if (trimmedLine) {
-                const isAllCaps = /^[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ\s]+$/.test(trimmedLine);
-                const isQuestion = trimmedLine.includes('?');
-                const isBulletPoint = trimmedLine.startsWith('-');
-                const hasColon = trimmedLine.includes(':');
+function isTitleCase(text) {
+    const trimmed = text.trim();
+    if (!trimmed || trimmed.length < 3) return false;
+    return /^[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ\s\d.,!?:;()\-"']+$/.test(trimmed);
+}
 
-                if (isAllCaps || isQuestion || isBulletPoint || processedLines.length === 0) {
-                    processedLines.push(trimmedLine);
-                } else if (hasColon && processedLines.length > 0) {
-                    const lastLine = processedLines[processedLines.length - 1];
-                    if (lastLine.includes(':')) {
-                        processedLines.push(trimmedLine);
-                    } else {
-                        if (!lastLine.includes('?') && !lastLine.startsWith('-') && 
-                            !/^[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ\s]+$/.test(lastLine)) {
-                            processedLines[processedLines.length - 1] += ' ' + trimmedLine;
-                        } else {
-                            processedLines.push(trimmedLine);
-                        }
-                    }
+lines.forEach(line => {
+    const trimmedLine = line.trim();
+    if (trimmedLine) {
+        const isTitle = isTitleCase(trimmedLine);
+        const isQuestion = trimmedLine.includes('?');
+        const isBulletPoint = trimmedLine.startsWith('-');
+        const hasColon = trimmedLine.includes(':');
+
+        if (isTitle || isQuestion || isBulletPoint || processedLines.length === 0) {
+            processedLines.push(trimmedLine);
+        } else if (hasColon && processedLines.length > 0) {
+            const lastLine = processedLines[processedLines.length - 1];
+            if (lastLine.includes(':')) {
+                processedLines.push(trimmedLine);
+            } else {
+                if (!lastLine.includes('?') && !lastLine.startsWith('-') && 
+                    !isTitleCase(lastLine)) {
+                    processedLines[processedLines.length - 1] += ' ' + trimmedLine;
                 } else {
-                    const lastLine = processedLines[processedLines.length - 1];
-                    if (!lastLine.includes('?') && !lastLine.startsWith('-') && 
-                        !/^[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ\s]+$/.test(lastLine)) {
-                        processedLines[processedLines.length - 1] += ' ' + trimmedLine;
-                    } else {
-                        processedLines.push(trimmedLine);
-                    }
+                    processedLines.push(trimmedLine);
                 }
             }
-        });
+        } else {
+            const lastLine = processedLines[processedLines.length - 1];
+            if (!lastLine.includes('?') && !lastLine.startsWith('-') && 
+                !isTitleCase(lastLine)) {
+                processedLines[processedLines.length - 1] += ' ' + trimmedLine;
+            } else {
+                processedLines.push(trimmedLine);
+            }
+        }
+    }
+});
 
         let currentIndex = 1;  
 
@@ -276,7 +282,7 @@ exports.handler = async function(event, context) {
                     scriptCode += `        return\n`;
                     scriptCode += `    }\n`;
 
-                    if (/^[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÀÈÌÒÙÇ\s*]+$/.test(chunk)) {
+                    if (isTitleCase(chunk)) {
                         scriptCode += `    Sleep, 1000\n`;
                     }
 
