@@ -106,7 +106,6 @@ scriptCode += `global waitingAnswer := 0\n`;
 
 scriptCode += `UpdateStatusMessage(message) {\n`;
 scriptCode += `    GuiControl,, StatusText, % message\n`;
-scriptCode += `    SetTimer, ClearStatus, -4000\n`;
 scriptCode += `}\n\n`;
 
 scriptCode += `Gui, New\n`;
@@ -134,20 +133,19 @@ scriptCode += `Gui, Add, Text, x20 y250 w340 h30 vStatusText cFF4444 Center\n\n`
 scriptCode += `Gui, Font, s8\n`;
 scriptCode += `Gui, Add, Text, x20 y290 w340 Center c94A3B8, Desenvolvido por cralw16\n\n`;
 
-scriptCode += `OnExit, GuiClose\n\n`;
-
-scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n`;
-scriptCode += `return\n\n`;
-
+scriptCode += `Gui, 3:Default\n`;
 scriptCode += `Gui, 3:+AlwaysOnTop +ToolWindow -SysMenu\n`;
 scriptCode += `Gui, 3:Color, 1E293B, 243449\n`;
 scriptCode += `Gui, 3:Margin, 20, 20\n`;
 scriptCode += `Gui, 3:Font, s10 bold cE2E8F0\n`;
-scriptCode += `Gui, 3:Add, Text, x20 y20 w200 h30, O aluno respondeu a pergunta?\n`;
+scriptCode += `Gui, 3:Add, Text,, O aluno respondeu a pergunta?\n`;
 scriptCode += `Gui, 3:Font, s10 normal\n`;
 scriptCode += `Gui, 3:Add, Button, x20 y60 w80 h30 gAnswerYes, Sim\n`;
 scriptCode += `Gui, 3:Add, Button, x110 y60 w80 h30 gAnswerNo, Não\n`;
-        
+
+scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n`;
+scriptCode += `return\n\n`;
+
 scriptCode += `GuiClose:\n`;
 scriptCode += `SetTimer, SendNextText, Off\n`;
 scriptCode += `SetTimer, ClearStatus, Off\n`;
@@ -220,7 +218,6 @@ scriptCode += `return\n\n`;
 scriptCode += `ClearStatus:\n`;
 scriptCode += `GuiControl,, StatusText, % ""\n`;
 scriptCode += `return\n\n`;
-
 
         const lines = inputText.split(/\n|\\n/);
         let processedLines = [];
