@@ -145,7 +145,12 @@ exports.handler = async function(event, context) {
         
         scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n\n`;
         scriptCode += `GuiClose:\n`;
-        scriptCode += `ExitApp\n`;
+        scriptCode += `DetectHiddenWindows, On\n`;
+        scriptCode += `MsgBox, 4, Confirmar Saída, Deseja realmente fechar o script?\n`;
+        scriptCode += `IfMsgBox Yes\n`;
+        scriptCode += `{\n`;
+        scriptCode += `    ExitApp\n`;
+        scriptCode += `}\n`;
         scriptCode += `return\n\n`;
 
         scriptCode += `UpdateSpeed:\n`;
