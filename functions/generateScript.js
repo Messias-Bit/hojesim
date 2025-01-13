@@ -144,8 +144,8 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, 3:Add, Button, x110 y60 w80 h30 gAnswerNo, Não\n`;
         
         scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n\n`;
+       
         scriptCode += `GuiClose:\n`;
-        scriptCode += `DetectHiddenWindows, On\n`;
         scriptCode += `WinGetPos, mainX, mainY,,, AutoScript RCC\n`;
         scriptCode += `confirmX := mainX + 400\n`;
         scriptCode += `Gui, 2:New\n`;
@@ -159,6 +159,7 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, 2:Add, Button, x110 y60 w80 h30 gConfirmCloseNo, Não\n`;
         scriptCode += `Gui, 2:Show, x%confirmX% y%mainY% w220 h100, Confirmação\n`;
         scriptCode += `return\n\n`;
+
 
         scriptCode += `ConfirmCloseYes:\n`;
         scriptCode += `ExitApp\n`;
