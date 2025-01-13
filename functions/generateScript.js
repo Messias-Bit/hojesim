@@ -144,6 +144,9 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, 3:Add, Button, x110 y60 w80 h30 gAnswerNo, Não\n`;
         
         scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n\n`;
+        scriptCode += `GuiClose:\n`;
+        scriptCode += `ExitApp\n`;
+        scriptCode += `return\n\n`;
 
         scriptCode += `UpdateSpeed:\n`;
         scriptCode += `Gui, Submit, NoHide\n`;
