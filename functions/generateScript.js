@@ -146,8 +146,10 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n\n`;
        
         scriptCode += `GuiClose:\n`;
+        scriptCode += `Gui, +OwnDialogs\n`;  
         scriptCode += `WinGetPos, mainX, mainY,,, AutoScript RCC\n`;
         scriptCode += `confirmX := mainX + 400\n`;
+        scriptCode += `Gui, 2:Destroy\n`;    
         scriptCode += `Gui, 2:New\n`;
         scriptCode += `Gui, 2:+AlwaysOnTop +ToolWindow -SysMenu\n`;
         scriptCode += `Gui, 2:Color, 1E293B, 243449\n`;
