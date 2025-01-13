@@ -191,7 +191,7 @@ scriptCode += `WinGetPos, mainX, mainY,,, AutoScript RCC\n`;
 scriptCode += `confirmX := mainX + 400\n`;
 scriptCode += `isPaused := 1\n`;
 scriptCode += `SetTimer, SendNextText, Off\n`;
-scriptCode += `GuiControl,, StatusText, % "Script pausado, aguardando resposta do aluno..."\n`;
+scriptCode += `UpdateStatusMessage("Script pausado, aguardando resposta do aluno...")\n`;
 scriptCode += `Gui, 3:Show, x%confirmX% y%mainY% w220 h100, Confirmação\n`;
 scriptCode += `return\n\n`;
 
@@ -199,13 +199,13 @@ scriptCode += `AnswerYes:\n`;
 scriptCode += `if (!waitingAnswer) {\n`;
 scriptCode += `    return\n`;
 scriptCode += `}\n`;
+scriptCode += `Gui, 3:Hide\n`;
 scriptCode += `UpdateStatusMessage("Script será reiniciado em 5 segundos...")\n`;
 scriptCode += `Sleep, 5000\n`;
 scriptCode += `UpdateStatusMessage("Script ativo")\n`;
 scriptCode += `isPaused := 0\n`;
 scriptCode += `textIndex := waitingAnswer + 1\n`;
 scriptCode += `waitingAnswer := 0\n`;
-scriptCode += `Gui, 3:Hide\n`;
 scriptCode += `SetTimer, SendNextText, -100\n`;
 scriptCode += `return\n\n`;
 
@@ -220,6 +220,7 @@ scriptCode += `return\n\n`;
 scriptCode += `ClearStatus:\n`;
 scriptCode += `GuiControl,, StatusText, % ""\n`;
 scriptCode += `return\n\n`;
+
 
         const lines = inputText.split(/\n|\\n/);
         let processedLines = [];
