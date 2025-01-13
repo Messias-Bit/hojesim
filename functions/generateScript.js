@@ -146,11 +146,13 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, Show, w380 h320, AutoScript RCC\n\n`;
        
         scriptCode += `GuiClose:\n`;
-        scriptCode += `Gui, +OwnDialogs\n`;  
+        scriptCode += `Gui, +OwnDialogs\n`;
         scriptCode += `WinGetPos, mainX, mainY,,, AutoScript RCC\n`;
         scriptCode += `confirmX := mainX + 400\n`;
-        scriptCode += `Gui, 2:Destroy\n`;    
-        scriptCode += `Gui, 2:New\n`;
+        scriptCode += `if (WinExist("Confirmação")) {\n`; 
+        scriptCode += `    return\n`;
+        scriptCode += `}\n`;
+        scriptCode += `Gui, 2:New, +owner1\n`; 
         scriptCode += `Gui, 2:+AlwaysOnTop +ToolWindow -SysMenu\n`;
         scriptCode += `Gui, 2:Color, 1E293B, 243449\n`;
         scriptCode += `Gui, 2:Margin, 20, 20\n`;
@@ -162,7 +164,6 @@ exports.handler = async function(event, context) {
         scriptCode += `Gui, 2:Show, x%confirmX% y%mainY% w220 h100, Confirmação\n`;
         scriptCode += `return\n\n`;
 
-
         scriptCode += `ConfirmCloseYes:\n`;
         scriptCode += `ExitApp\n`;
         scriptCode += `return\n\n`;
@@ -170,7 +171,6 @@ exports.handler = async function(event, context) {
         scriptCode += `ConfirmCloseNo:\n`;
         scriptCode += `Gui, 2:Hide\n`;
         scriptCode += `return\n\n`;
-
 
         scriptCode += `UpdateSpeed:\n`;
         scriptCode += `Gui, Submit, NoHide\n`;
